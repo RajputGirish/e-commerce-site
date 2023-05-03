@@ -1,0 +1,38 @@
+<p style="color: red;">header works!</p>
+<nav class="nav">
+    <h1><a routerLink="">E-COMM</a> </h1>
+    <div *ngIf="menuType!=='seller'" class="nav-search">  <!--We can use both this and below sentaince to do show serch fiild only when default or user is active-->
+<!-- <div *ngIf="menuType==='default' || menuType==='user'" class="nav-search"> --> 
+        <input type="text" #searchInput (keyup)="searchProduct($event)" (blur)="hidesearch()"
+            placeholder="Serch for product">
+        <button (click)="submitSearch(searchInput.value)">Search</button>
+        <ul class="suggested-search" *ngIf="serarchResult">
+            <li *ngFor="let item of serarchResult">
+                <a (mousedown)="RedirectToDetails(item.id)">{{item.name}}</a>
+            </li>
+        </ul>
+    </div>
+    <div [ngSwitch]="menuType">
+        <ul *ngSwitchCase="'default'">
+            <li><a routerLink="seller-auth">Seller</a></li>
+            <li><a routerLink="">Home</a></li>
+            <li><a routerLink="/user-auth">Login/SignUp</a></li>
+            <li><a href="#">Cart({{cartItems}})</a></li>
+        </ul>
+        <ul *ngSwitchCase="'seller'">
+            <li><a routerLink="seller-add-product">Add Product</a></li>
+            <li><a routerLink="/seller-home">List</a></li>
+            <li><a (click)="logout()">Logout</a></li>
+            <li><a href="#">{{sellerName | titlecase}}</a></li>
+        </ul>
+        <ul *ngSwitchCase="'user'">
+            <li><a routerLink="seller-auth">Seller</a></li>
+            <li><a routerLink="">Home</a></li>
+            <li><a>{{userName | titlecase}}</a></li>
+            <li><a routerLink="my-orders">My Orders</a></li>
+            <li><a (click)="userLogout()">Logout</a></li>
+
+            <li><a [routerLink] ="cartItems>0 ? 'cart-page': null">Cart({{cartItems}})</a></li> <!-- This will show that the cart is only visible if it has atleast one product otherwise did not show any page -->
+        </ul>
+    </div>
+</nav>
